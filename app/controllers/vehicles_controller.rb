@@ -4,8 +4,6 @@ class VehiclesController < ApplicationController
   # GET /vehicles or /vehicles.json
   def index
     @vehicles = Vehicle.all
-
-    pp @vehicles
   end
 
   # GET /vehicles/1 or /vehicles/1.json
@@ -23,12 +21,12 @@ class VehiclesController < ApplicationController
 
   # POST /vehicles or /vehicles.json
   def create
-    @vehicle = Vehicle.new(vehicle_params)
+    @vehicle = VehicleBuilder.new(vehicle_params: vehicle_create_params).create
 
     respond_to do |format|
-      if @vehicle.save
-        format.html { redirect_to @vehicle, notice: "Vehicle was successfully created." }
-        format.json { render :show, status: :created, location: @vehicle }
+      if @vehicle.valid?
+        format.html { redirect_to root_path, notice: "Vehicle was successfully created." }
+        format.json { render :show, status: :created, location: root_path }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @vehicle.errors, status: :unprocessable_entity }
@@ -38,10 +36,12 @@ class VehiclesController < ApplicationController
 
   # PATCH/PUT /vehicles/1 or /vehicles/1.json
   def update
+    VehicleBuilder.new(vehicle_params: vehicle_update_params).update(@vehicle)
+
     respond_to do |format|
-      if @vehicle.update(vehicle_params)
-        format.html { redirect_to @vehicle, notice: "Vehicle was successfully updated." }
-        format.json { render :show, status: :ok, location: @vehicle }
+      if @vehicle.valid?
+        format.html { redirect_to root_path, notice: "Vehicle was successfully updated." }
+        format.json { render :show, status: :ok, location: root_path }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @vehicle.errors, status: :unprocessable_entity }
@@ -64,8 +64,19 @@ class VehiclesController < ApplicationController
       @vehicle = Vehicle.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
-    def vehicle_params
-      params.permit(:nickname)
+    def vehicle_create_params
+      params.require(:vehicle).permit(
+        :nickname, :type, :mileage,
+        door_attributes: [:type],
+        engine_attributes: [:status],
+      )
+    end
+
+    def vehicle_update_params
+      params.require(:vehicle).permit(
+        :id, :nickname, :type, :mileage,
+        door_attributes: [:id, :type],
+        engine_attributes: [:id, :status],
+      )
     end
 end

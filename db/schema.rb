@@ -10,12 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_16_224014) do
+ActiveRecord::Schema.define(version: 2023_05_06_155209) do
+
+  create_table "doors", force: :cascade do |t|
+    t.integer "vehicle_id", null: false
+    t.boolean "sliding", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["vehicle_id"], name: "index_doors_on_vehicle_id"
+  end
+
+  create_table "engines", force: :cascade do |t|
+    t.integer "vehicle_id", null: false
+    t.string "status", limit: 10, default: "works", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["vehicle_id"], name: "index_engines_on_vehicle_id"
+  end
+
+  create_table "seats", force: :cascade do |t|
+    t.integer "vehicle_id", null: false
+    t.string "status", limit: 10, default: "works", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["vehicle_id"], name: "index_seats_on_vehicle_id"
+  end
 
   create_table "vehicles", force: :cascade do |t|
     t.string "nickname"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type", limit: 30, null: false
+    t.integer "mileage", null: false
+    t.string "registration_id", limit: 30
+    t.string "ad_id", limit: 30
   end
 
+  add_foreign_key "doors", "vehicles"
+  add_foreign_key "engines", "vehicles"
+  add_foreign_key "seats", "vehicles"
 end

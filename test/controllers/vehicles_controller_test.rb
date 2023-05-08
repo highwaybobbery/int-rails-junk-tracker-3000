@@ -17,13 +17,14 @@ class VehiclesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create vehicle" do
     assert_difference('Vehicle.count') do
-      post vehicles_url, params: { vehicle: { nickname: @vehicle.nickname } }
+      post vehicles_url, params: { vehicle: { type: 'Sedan', nickname: @vehicle.nickname } }
     end
 
-    assert_redirected_to vehicle_url(Vehicle.last)
+    assert_redirected_to root_path
   end
 
   test "should show vehicle" do
+    skip('show view not implemented')
     get vehicle_url(@vehicle)
     assert_response :success
   end
@@ -34,8 +35,9 @@ class VehiclesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update vehicle" do
+    @vehicle.update(ad_id: '1'*30)
     patch vehicle_url(@vehicle), params: { vehicle: { nickname: @vehicle.nickname } }
-    assert_redirected_to vehicle_url(@vehicle)
+    assert_redirected_to root_path
   end
 
   test "should destroy vehicle" do

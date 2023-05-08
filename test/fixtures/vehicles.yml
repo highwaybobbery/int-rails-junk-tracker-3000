@@ -2,6 +2,10 @@
 
 one:
   nickname: MyString
+  type: Sedan
+  mileage: 100
 
 two:
   nickname: MyString
+  type: MiniVan
+  mileage: 22_000

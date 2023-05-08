@@ -6,7 +6,8 @@ class VehiclePromotionService
     raise "ad_text must be a String!" unless ad_text.is_a?(String)
 
     # Pretend we're making a request to an external service :)
-    sleep(3)
+    # Commented out for now. this service should be pushed to a job queue such as sidekiq!
+    # sleep(3)
 
     charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
     Array.new(30) { charset.sample }.join
@@ -17,7 +18,8 @@ class VehiclePromotionService
     raise "ad_text must be a String!" unless ad_text.is_a?(String)
 
     # Pretend we're making a request to an external service :)
-    sleep(3)
+    # Commented out for now. this service should be pushed to a job queue such as sidekiq!
+    # sleep(3)
 
     ad_id
   end
